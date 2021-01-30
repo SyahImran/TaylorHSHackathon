@@ -1,4 +1,4 @@
 public class HomeOwner
 {
-  public 
+  
 }
