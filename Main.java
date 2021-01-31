@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 
+//test commit 1
 
 public class Main {
 
@@ -67,9 +68,5 @@ public class Main {
             bufferStrategy.show();
             graphics.dispose();
         }
-
-
-
-
     }
 }
