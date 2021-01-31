@@ -191,15 +191,34 @@ public class Main extends javax.swing.JFrame {
         System.out.println("C: " + compoundValue);
         System.out.println("T: " + timeValue);
         System.out.println("A: " + amount);
-        jLabel6.setText("Final Amount: $" + amount);
+        String stringAmount = String.format("%.2f", amount);
+        jLabel6.setText("Final Amount: $" + stringAmount);
     }                                        
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
+        jSpinner1.setValue(0);
+        jSpinner2.setValue(0);
+        jSpinner3.setValue(0);
+        jSpinner4.setValue(0);
+        jLabel6.setText("Final Amount:");
     }                                        
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
+        principalValue = (int) jSpinner1.getValue();
+        rateValue = (double) (int) jSpinner2.getValue() / 100;
+        compoundValue = (int) jSpinner3.getValue();
+        timeValue = (int) jSpinner4.getValue();
+        double amount =
+                principalValue * (Math.pow(1 + (rateValue / compoundValue),
+                                           compoundValue * timeValue));
+        double[] amounts = new double[7];
+        amounts[0] = principalValue;
+        for (int i = 1; i < amounts.length; i++) {
+            amounts[i] = principalValue * (Math.pow(1 + (rateValue / compoundValue),
+                                                    compoundValue * (timeValue / 7)));
+        }
     }                                        
 
     /**
