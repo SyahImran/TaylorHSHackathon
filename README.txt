@@ -26,3 +26,6 @@ MOUSE
  displaying a graph. There should be no use of the right mouse
  button. 
  
+DEPENDENCIES
+
+ Download the packages from Maven listed under the dependencies folder.
