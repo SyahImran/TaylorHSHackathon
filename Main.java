@@ -1,3 +1,5 @@
+import javax.swing.*;
+
 /**
  *
  * @author Shamiya and Ismat
@@ -32,10 +34,17 @@ public class Main extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
         jLabel6 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
-        jSpinner2 = new javax.swing.JSpinner();
-        jSpinner3 = new javax.swing.JSpinner();
-        jSpinner4 = new javax.swing.JSpinner();
+        jSpinner1 = new javax.swing.JSpinner(new SpinnerNumberModel(0, 0,
+                                                                    100000000
+                , 1));
+        jSpinner2 = new javax.swing.JSpinner(new SpinnerNumberModel(0, 0,
+                                                                    100000000
+                , 1));
+        jSpinner3 = new javax.swing.JSpinner(new SpinnerNumberModel(0, 0,
+                                                                    365
+                , 1));
+        jSpinner4 = new javax.swing.JSpinner(new SpinnerNumberModel(0, 0,
+                                                                    100, 1));
 
         jFormattedTextField1.setText("jFormattedTextField1");
 
@@ -57,16 +66,16 @@ public class Main extends javax.swing.JFrame {
         jLabel1.setText("Compound Interest Calculator");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel2.setText("Enter Principal (P) :");
+        jLabel2.setText("Enter Principal ($) :");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel3.setText("Enter Rate (R) :");
+        jLabel3.setText("Enter Interest Rate (%) :");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel4.setText("Enter Compound (n) :");
+        jLabel4.setText("Enter Number Times Compounded Annually :");
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel5.setText("Enter Time (t in years) :");
+        jLabel5.setText("Enter Time (in years) :");
 
         jButton1.setText("Calculate");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -92,7 +101,7 @@ public class Main extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTextPane1);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel6.setText("Answer:");
+        jLabel6.setText("Final Amount:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -137,11 +146,13 @@ public class Main extends javax.swing.JFrame {
                 .addGap(5, 5, 5)
                 .addComponent(jLabel3)
                 .addGap(8, 8, 8)
-                .addComponent(jSpinner3, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jSpinner2,
+                              javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jSpinner3,
+                              javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -162,11 +173,25 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>                        
 
     int principalValue = 0;
-    int rateValue = 0;
+    double rateValue = 0;
     int compoundValue = 0;
+    int timeValue = 0;
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
+        principalValue = (int) jSpinner1.getValue();
+        rateValue = (double) (int) jSpinner2.getValue() / 100;
+        compoundValue = (int) jSpinner3.getValue();
+        timeValue = (int) jSpinner4.getValue();
+        double amount =
+                principalValue * (Math.pow(1 + (rateValue / compoundValue),
+                                           compoundValue * timeValue));
+        System.out.println("P: " + principalValue);
+        System.out.println("R: " + rateValue);
+        System.out.println("C: " + compoundValue);
+        System.out.println("T: " + timeValue);
+        System.out.println("A: " + amount);
+        jLabel6.setText("Final Amount: $" + amount);
     }                                        
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {                                         
