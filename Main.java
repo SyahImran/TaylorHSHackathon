@@ -1,3 +1,12 @@
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.ui.ApplicationFrame;
+import org.jfree.ui.RefineryUtilities;
+
 import javax.swing.*;
 
 /**
@@ -48,11 +57,13 @@ public class Main extends javax.swing.JFrame {
 
         jFormattedTextField1.setText("jFormattedTextField1");
 
+
+
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
         jDialog1Layout.setHorizontalGroup(
             jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 600, Short.MAX_VALUE)
         );
         jDialog1Layout.setVerticalGroup(
             jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -98,7 +109,7 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        jScrollPane1.setViewportView(jTextPane1);
+        jScrollPane1.setViewportView(chartPanel);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel6.setText("Final Amount:");
@@ -165,7 +176,8 @@ public class Main extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1,
+                              javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
         );
 
@@ -202,6 +214,7 @@ public class Main extends javax.swing.JFrame {
         jSpinner3.setValue(0);
         jSpinner4.setValue(0);
         jLabel6.setText("Final Amount:");
+        jScrollPane1.setViewportView(jTextPane1);
     }                                        
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {                                         
@@ -210,15 +223,19 @@ public class Main extends javax.swing.JFrame {
         rateValue = (double) (int) jSpinner2.getValue() / 100;
         compoundValue = (int) jSpinner3.getValue();
         timeValue = (int) jSpinner4.getValue();
-        double amount =
-                principalValue * (Math.pow(1 + (rateValue / compoundValue),
-                                           compoundValue * timeValue));
-        double[] amounts = new double[7];
+
+        int time = (timeValue / 6);
         amounts[0] = principalValue;
         for (int i = 1; i < amounts.length; i++) {
-            amounts[i] = principalValue * (Math.pow(1 + (rateValue / compoundValue),
-                                                    compoundValue * (timeValue / 7)));
+            amounts[i] = (int) (principalValue * (Math.pow(1 + (rateValue / compoundValue),
+                                                           compoundValue * time * i)));
+            System.out.println("A:" + amounts[i] + " T:" + time * i);
         }
+
+        System.out.println(amounts[2]);
+
+        chartPanel = createChartPanel();
+        jScrollPane1.setViewportView(chartPanel);
     }                                        
 
     /**
@@ -256,6 +273,32 @@ public class Main extends javax.swing.JFrame {
         });
     }
 
+    private DefaultCategoryDataset createDataset() {
+
+        dataset = new DefaultCategoryDataset();
+        dataset.addValue(amounts[0], "interest", "0");
+        for (int i = 1; i < amounts.length; i++) {
+            dataset.addValue(amounts[i], "interest",
+                             String.valueOf((timeValue / 6) * i));
+            System.out.println(amounts[i] + " " + String.valueOf((timeValue / 6) * i));
+        }
+        return dataset;
+    }
+
+    private JPanel createChartPanel() {
+        JFreeChart chart = ChartFactory.createLineChart(
+                "Amount Over Time",
+                "Years", "Amount in dollars",
+                createDataset(),
+                PlotOrientation.VERTICAL,
+                true, true, false);
+
+        JPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(jScrollPane1.getPreferredSize());
+
+        return chartPanel;
+    }
+
     // Variables declaration - do not modify                     
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -274,5 +317,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JSpinner jSpinner3;
     private javax.swing.JSpinner jSpinner4;
     private javax.swing.JTextPane jTextPane1;
+    private DefaultCategoryDataset dataset;
+    public int[] amounts = new int[8];
+    private JPanel chartPanel;
     // End of variables declaration                   
 }
